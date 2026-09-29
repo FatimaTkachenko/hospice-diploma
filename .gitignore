@@ -1,0 +1,19 @@
+# Artifacts (screenshots, dumps) — не коммитим
+artifacts/
+
+# Gradle
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# IDE
+.idea/
+*.iml
+.DS_Store
+__MACOSX/
+
+# Kotlin
+.kotlin/
+
+# Локальные настройки SDK
+local.properties
