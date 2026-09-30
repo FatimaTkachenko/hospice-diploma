@@ -62,6 +62,7 @@ dependencies {
     def hilt_version = "2.57.2"
     def gson_version = "2.13.1"
     def swipe_refresh_version = "1.2.0"
+    def allure_version = "2.4.0"
 
     implementation "androidx.core:core-ktx:1.18.0"
     implementation "androidx.appcompat:appcompat:1.7.1"
@@ -96,4 +97,14 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-contrib:3.7.0"
     androidTestImplementation "com.google.dagger:hilt-android-testing:$hilt_version"
     kaptAndroidTest "com.google.dagger:hilt-compiler:$hilt_version"
+
+    // UI Automator
+    androidTestImplementation "androidx.test.uiautomator:uiautomator:2.3.0"
+
+    // Allure
+    androidTestImplementation "io.qameta.allure:allure-kotlin-model:$allure_version"
+    androidTestImplementation "io.qameta.allure:allure-kotlin-commons:$allure_version"
+    androidTestImplementation "io.qameta.allure:allure-kotlin-junit4:$allure_version"
+    androidTestImplementation "io.qameta.allure:allure-kotlin-android:$allure_version"
+    kaptAndroidTest "io.qameta.allure:allure-kotlin-junit4:$allure_version"
 }
