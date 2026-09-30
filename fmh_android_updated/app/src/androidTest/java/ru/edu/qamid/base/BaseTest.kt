@@ -1,6 +1,8 @@
 package ru.edu.qamid.base
 
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -16,24 +18,34 @@ abstract class BaseTest {
     val activityRule = ActivityScenarioRule(AppActivity::class.java)
 
     /**
-     * Ждёт появления поля Login на экране (до 10 секунд).
-     * Используется вместо sleep().
+     * Ждёт появления экрана логина (до 15 секунд).
      */
     protected fun waitForLoginScreen() {
-        val timeoutMs = 10_000L
+        waitForView(R.id.login_edit_text, 15_000L, "Login screen")
+    }
+
+    /**
+     * Ждёт появления главного экрана (до 15 секунд).
+     */
+    protected fun waitForMainScreen() {
+        waitForView(R.id.main_menu_image_button, 15_000L, "Main screen")
+    }
+
+    /**
+     * Универсальное ожидание появления view по id.
+     * Без sleep() — просто опрос с интервалом.
+     */
+    private fun waitForView(viewId: Int, timeoutMs: Long, screenName: String) {
         val startTime = System.currentTimeMillis()
+        var lastError: Throwable? = null
         while (System.currentTimeMillis() - startTime < timeoutMs) {
             try {
-                onView(withId(R.id.login_edit_text)).check(
-                    androidx.test.espresso.assertion.ViewAssertions.matches(
-                        androidx.test.espresso.matcher.ViewMatchers.isDisplayed()
-                    )
-                )
+                onView(withId(viewId)).check(matches(isDisplayed()))
                 return
             } catch (e: Throwable) {
-                // Пока не нашли — ждём
+                lastError = e
             }
         }
-        throw AssertionError("Login screen did not appear within $timeoutMs ms")
+        throw AssertionError("$screenName did not appear within $timeoutMs ms", lastError)
     }
 }

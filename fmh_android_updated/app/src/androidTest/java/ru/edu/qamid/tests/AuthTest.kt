@@ -5,11 +5,13 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import ru.edu.qamid.base.BaseTest
 import ru.edu.qamid.pages.LoginPage
+import ru.edu.qamid.pages.MainPage
 
 @RunWith(AndroidJUnit4::class)
 class AuthTest : BaseTest() {
 
     private val loginPage = LoginPage()
+    private val mainPage = MainPage()
 
     @Test
     fun successfulLogin() {
@@ -19,5 +21,10 @@ class AuthTest : BaseTest() {
             .checkPasswordFieldIsDisplayed()
             .checkSignInButtonIsDisplayed()
             .login("login2", "password2")
+
+        waitForMainScreen()
+        mainPage
+            .checkMainScreenIsDisplayed()
+            .checkAllNewsButtonIsDisplayed()
     }
 }
