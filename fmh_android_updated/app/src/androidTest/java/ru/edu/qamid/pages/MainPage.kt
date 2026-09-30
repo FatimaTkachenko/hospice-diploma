@@ -50,4 +50,14 @@ class MainPage {
         onView(withId(R.id.news_list_recycler_view)).check(matches(isDisplayed()))
         return this
     }
-} 
+
+    /**
+     * Полный сценарий выхода из приложения:
+     * открыть меню профиля → нажать Log out.
+     */
+    fun logout(): MainPage {
+        clickAuthorization()
+        onView(withText("Log out")).perform(click())
+        return this
+    }
+}
