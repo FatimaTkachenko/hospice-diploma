@@ -18,7 +18,12 @@ android {
         versionCode 14
         versionName "1.0.0"
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "io.qameta.allure.android.runners.AllureAndroidJUnitRunner"
+        testInstrumentationRunnerArguments clearPackageData: 'true'
+    }
+
+    testOptions {
+        execution 'ANDROIDX_TEST_ORCHESTRATOR'
     }
 
     compileOptions {
@@ -100,6 +105,9 @@ dependencies {
 
     // UI Automator
     androidTestImplementation "androidx.test.uiautomator:uiautomator:2.3.0"
+
+    // Test Orchestrator
+    androidTestUtil "androidx.test:orchestrator:1.5.1"
 
     // Allure
     androidTestImplementation "io.qameta.allure:allure-kotlin-model:$allure_version"

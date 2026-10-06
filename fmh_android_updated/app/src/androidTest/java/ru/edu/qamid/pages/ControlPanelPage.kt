@@ -12,6 +12,7 @@ import androidx.test.espresso.matcher.ViewMatchers.hasDescendant
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
+import io.qameta.allure.kotlin.Step
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers.allOf
 import ru.edu.qamid.R
@@ -21,24 +22,25 @@ import ru.edu.qamid.R
  */
 class ControlPanelPage {
 
+    @Step("Проверить, что Control panel отображается")
     fun checkControlPanelIsDisplayed(): ControlPanelPage {
         onView(withText("Control panel")).check(matches(isDisplayed()))
         return this
     }
 
+    @Step("Проверить, что список новостей отображается")
     fun checkNewsListIsDisplayed(): ControlPanelPage {
         onView(withId(R.id.news_list_recycler_view)).check(matches(isDisplayed()))
         return this
     }
 
-    /**
-     * Открывает форму создания новости — клик по "+" в панели.
-     */
+    @Step("Нажать кнопку создания новости (+)")
     fun clickCreateNewsButton(): ControlPanelPage {
         onView(withId(R.id.news_edit_button)).perform(click())
         return this
     }
 
+    @Step("Нажать кнопку редактирования первой новости")
     fun clickEditFirstNews(): ControlPanelPage {
         onView(withId(R.id.news_list_recycler_view)).perform(
             RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
@@ -49,6 +51,7 @@ class ControlPanelPage {
         return this
     }
 
+    @Step("Нажать кнопку удаления первой новости")
     fun clickDeleteFirstNews(): ControlPanelPage {
         onView(withId(R.id.news_list_recycler_view)).perform(
             RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
@@ -59,6 +62,7 @@ class ControlPanelPage {
         return this
     }
 
+    @Step("Проверить, что новость с заголовком '{title}' существует в списке")
     fun checkNewsWithTitleExists(title: String): ControlPanelPage {
         onView(withId(R.id.news_list_recycler_view))
             .perform(

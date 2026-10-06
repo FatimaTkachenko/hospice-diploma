@@ -1,15 +1,24 @@
 package ru.edu.qamid.tests
 
 import android.util.Log
-import androidx.test.ext.junit.runners.AndroidJUnit4
+import io.qameta.allure.kotlin.Description
+import io.qameta.allure.kotlin.Epic
+import io.qameta.allure.kotlin.Feature
+import io.qameta.allure.kotlin.Owner
+import io.qameta.allure.kotlin.Severity
+import io.qameta.allure.kotlin.SeverityLevel
+import io.qameta.allure.kotlin.Story
 import org.junit.Test
-import org.junit.runner.RunWith
 import ru.edu.qamid.base.BaseTest
 import ru.edu.qamid.pages.LoginPage
 import ru.edu.qamid.pages.MainPage
 import ru.edu.qamid.pages.OurMissionPage
 
-@RunWith(AndroidJUnit4::class)
+
+@Epic("Мобильный хоспис")
+@Feature("Страницы приложения")
+@Story("Раздел Our Mission (цитаты)")
+@Owner("Fatima Tkachenko")
 class OurMissionTest : BaseTest() {
 
     private val loginPage = LoginPage()
@@ -17,23 +26,21 @@ class OurMissionTest : BaseTest() {
     private val ourMissionPage = OurMissionPage()
 
     @Test
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Проверка перехода в раздел Our Mission и отображения списка цитат")
     fun openOurMissionScreen() {
         Log.d("OurMissionTest", "=== Start ===")
 
-        // 1. Логин
         waitForLoginScreen()
         loginPage.login("login2", "password2")
         Log.d("OurMissionTest", "Login submitted")
 
-        // 2. Ждём главный экран
         waitForMainScreen()
         Log.d("OurMissionTest", "Main screen visible")
 
-        // 3. Переходим в раздел "Our Mission"
         mainPage.clickOurMission()
         Log.d("OurMissionTest", "Our Mission button clicked")
 
-        // 4. Проверяем, что открылся экран цитат
         ourMissionPage
             .checkTitleIsDisplayed()
             .checkQuoteListIsDisplayed()

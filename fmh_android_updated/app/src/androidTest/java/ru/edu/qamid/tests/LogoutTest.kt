@@ -5,27 +5,37 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.uiautomator.By
 import androidx.test.uiautomator.Until
+import io.qameta.allure.kotlin.Description
+import io.qameta.allure.kotlin.Epic
+import io.qameta.allure.kotlin.Feature
+import io.qameta.allure.kotlin.Owner
+import io.qameta.allure.kotlin.Severity
+import io.qameta.allure.kotlin.SeverityLevel
+import io.qameta.allure.kotlin.Story
 import org.junit.Test
-import org.junit.runner.RunWith
 import ru.edu.qamid.R
 import ru.edu.qamid.base.BaseTest
 import ru.edu.qamid.pages.LoginPage
 import ru.edu.qamid.pages.MainPage
 
-@RunWith(AndroidJUnit4::class)
+
+@Epic("Мобильный хоспис")
+@Feature("Авторизация")
+@Story("Выход из приложения")
+@Owner("Fatima Tkachenko")
 class LogoutTest : BaseTest() {
 
     private val loginPage = LoginPage()
     private val mainPage = MainPage()
 
     @Test
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Проверка выхода из приложения через меню профиля: Log out возвращает на экран авторизации")
     fun logoutFromApp() {
         Log.d("LogoutTest", "=== Start ===")
 
-        // @Before уже привёл приложение к экрану логина
         waitForLoginScreen()
         Log.d("LogoutTest", "Login screen visible")
 
@@ -35,7 +45,6 @@ class LogoutTest : BaseTest() {
         waitForMainScreen()
         Log.d("LogoutTest", "Main screen visible")
 
-        // Logout
         mainPage.clickAuthorization()
         Log.d("LogoutTest", "Profile icon clicked")
 
@@ -45,7 +54,6 @@ class LogoutTest : BaseTest() {
         device.click(logOut.visibleBounds.centerX(), logOut.visibleBounds.centerY())
         Log.d("LogoutTest", "Clicked Log out")
 
-        // Проверяем, что вернулись на логин
         waitForLoginScreen()
         Log.d("LogoutTest", "Back to login screen")
 
