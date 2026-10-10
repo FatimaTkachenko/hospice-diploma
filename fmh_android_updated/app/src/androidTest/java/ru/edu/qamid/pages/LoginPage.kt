@@ -1,6 +1,7 @@
 package ru.edu.qamid.pages
 
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.ViewInteraction
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.closeSoftKeyboard
 import androidx.test.espresso.action.ViewActions.replaceText
@@ -15,25 +16,27 @@ import ru.edu.qamid.R
  */
 class LoginPage {
 
+    private val loginField: ViewInteraction = onView(withId(R.id.login_edit_text))
+    private val passwordField: ViewInteraction = onView(withId(R.id.password_edit_text))
+    private val signInButton: ViewInteraction = onView(withId(R.id.enter_button))
+
     fun enterLogin(login: String): LoginPage {
         Allure.step("Ввести логин: $login") {
-            onView(withId(R.id.login_edit_text))
-                .perform(replaceText(login), closeSoftKeyboard())
+            loginField.perform(replaceText(login), closeSoftKeyboard())
         }
         return this
     }
 
     fun enterPassword(password: String): LoginPage {
         Allure.step("Ввести пароль") {
-            onView(withId(R.id.password_edit_text))
-                .perform(replaceText(password), closeSoftKeyboard())
+            passwordField.perform(replaceText(password), closeSoftKeyboard())
         }
         return this
     }
 
     fun clickSignIn(): LoginPage {
         Allure.step("Нажать кнопку SIGN IN") {
-            onView(withId(R.id.enter_button)).perform(click())
+            signInButton.perform(click())
         }
         return this
     }
@@ -49,21 +52,21 @@ class LoginPage {
 
     fun checkLoginFieldIsDisplayed(): LoginPage {
         Allure.step("Проверить, что поле логина отображается") {
-            onView(withId(R.id.login_edit_text)).check(matches(isDisplayed()))
+            loginField.check(matches(isDisplayed()))
         }
         return this
     }
 
     fun checkPasswordFieldIsDisplayed(): LoginPage {
         Allure.step("Проверить, что поле пароля отображается") {
-            onView(withId(R.id.password_edit_text)).check(matches(isDisplayed()))
+            passwordField.check(matches(isDisplayed()))
         }
         return this
     }
 
     fun checkSignInButtonIsDisplayed(): LoginPage {
         Allure.step("Проверить, что кнопка SIGN IN отображается") {
-            onView(withId(R.id.enter_button)).check(matches(isDisplayed()))
+            signInButton.check(matches(isDisplayed()))
         }
         return this
     }

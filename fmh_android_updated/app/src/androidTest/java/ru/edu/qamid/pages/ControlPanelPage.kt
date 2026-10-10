@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.UiController
 import androidx.test.espresso.ViewAction
+import androidx.test.espresso.ViewInteraction
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
@@ -12,7 +13,7 @@ import androidx.test.espresso.matcher.ViewMatchers.hasDescendant
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
-import io.qameta.allure.kotlin.Step
+import io.qameta.allure.kotlin.Allure
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers.allOf
 import ru.edu.qamid.R
@@ -22,60 +23,69 @@ import ru.edu.qamid.R
  */
 class ControlPanelPage {
 
-    @Step("Проверить, что Control panel отображается")
+    private val controlPanelTitle: ViewInteraction = onView(withText("Control panel"))
+    private val newsRecyclerView: ViewInteraction = onView(withId(R.id.news_list_recycler_view))
+    private val createNewsButton: ViewInteraction = onView(withId(R.id.news_edit_button))
+
     fun checkControlPanelIsDisplayed(): ControlPanelPage {
-        onView(withText("Control panel")).check(matches(isDisplayed()))
+        Allure.step("Проверить, что Control panel отображается") {
+            controlPanelTitle.check(matches(isDisplayed()))
+        }
         return this
     }
 
-    @Step("Проверить, что список новостей отображается")
     fun checkNewsListIsDisplayed(): ControlPanelPage {
-        onView(withId(R.id.news_list_recycler_view)).check(matches(isDisplayed()))
+        Allure.step("Проверить, что список новостей отображается") {
+            newsRecyclerView.check(matches(isDisplayed()))
+        }
         return this
     }
 
-    @Step("Нажать кнопку создания новости (+)")
     fun clickCreateNewsButton(): ControlPanelPage {
-        onView(withId(R.id.news_edit_button)).perform(click())
+        Allure.step("Нажать кнопку создания новости (+)") {
+            createNewsButton.perform(click())
+        }
         return this
     }
 
-    @Step("Нажать кнопку редактирования первой новости")
     fun clickEditFirstNews(): ControlPanelPage {
-        onView(withId(R.id.news_list_recycler_view)).perform(
-            RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
-                0,
-                clickChildViewWithId(R.id.news_item_edit_image_view)
+        Allure.step("Нажать кнопку редактирования первой новости") {
+            newsRecyclerView.perform(
+                RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
+                    0,
+                    clickChildViewWithId(R.id.news_item_edit_image_view)
+                )
             )
-        )
+        }
         return this
     }
 
-    @Step("Нажать кнопку удаления первой новости")
     fun clickDeleteFirstNews(): ControlPanelPage {
-        onView(withId(R.id.news_list_recycler_view)).perform(
-            RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
-                0,
-                clickChildViewWithId(R.id.news_item_delete_image_view)
+        Allure.step("Нажать кнопку удаления первой новости") {
+            newsRecyclerView.perform(
+                RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
+                    0,
+                    clickChildViewWithId(R.id.news_item_delete_image_view)
+                )
             )
-        )
+        }
         return this
     }
 
-    @Step("Проверить, что новость с заголовком '{title}' существует в списке")
     fun checkNewsWithTitleExists(title: String): ControlPanelPage {
-        onView(withId(R.id.news_list_recycler_view))
-            .perform(
+        Allure.step("Проверить, что новость с заголовком '$title' существует в списке") {
+            newsRecyclerView.perform(
                 RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
                     hasDescendant(withText(title))
                 )
             )
-        onView(
-            allOf(
-                withId(R.id.news_item_title_text_view),
-                withText(title)
-            )
-        ).check(matches(isDisplayed()))
+            onView(
+                allOf(
+                    withId(R.id.news_item_title_text_view),
+                    withText(title)
+                )
+            ).check(matches(isDisplayed()))
+        }
         return this
     }
 

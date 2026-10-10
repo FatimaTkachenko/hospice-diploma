@@ -1,6 +1,7 @@
 package ru.edu.qamid.pages
 
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.ViewInteraction
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.closeSoftKeyboard
 import androidx.test.espresso.action.ViewActions.replaceText
@@ -10,7 +11,7 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
-import io.qameta.allure.kotlin.Step
+import io.qameta.allure.kotlin.Allure
 import ru.edu.qamid.R
 
 /**
@@ -21,74 +22,88 @@ class CreateNewsPage {
     private val device: UiDevice =
         UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
 
-    @Step("Проверить, что форма создания новости отображается")
+    private val creatingTitle: ViewInteraction = onView(withText("Creating"))
+    private val titleField: ViewInteraction = onView(withId(R.id.news_title_edit_text))
+    private val descriptionField: ViewInteraction = onView(withId(R.id.news_description_edit_text))
+    private val publishDateField: ViewInteraction = onView(withId(R.id.news_publish_date_edit_text))
+    private val publishTimeField: ViewInteraction = onView(withId(R.id.news_publish_time_edit_text))
+    private val categoryField: ViewInteraction = onView(withId(R.id.news_category_auto_complete))
+    private val saveButton: ViewInteraction = onView(withId(R.id.news_save_button))
+    private val cancelButton: ViewInteraction = onView(withId(R.id.news_cancel_button))
+
     fun checkTitleIsDisplayed(): CreateNewsPage {
-        onView(withText("Creating")).check(matches(isDisplayed()))
+        Allure.step("Проверить, что форма создания новости отображается") {
+            creatingTitle.check(matches(isDisplayed()))
+        }
         return this
     }
 
-    @Step("Ввести заголовок: {title}")
     fun enterTitle(title: String): CreateNewsPage {
-        onView(withId(R.id.news_title_edit_text))
-            .perform(replaceText(title), closeSoftKeyboard())
+        Allure.step("Ввести заголовок: $title") {
+            titleField.perform(replaceText(title), closeSoftKeyboard())
+        }
         return this
     }
 
-    @Step("Ввести описание: {description}")
     fun enterDescription(description: String): CreateNewsPage {
-        onView(withId(R.id.news_description_edit_text))
-            .perform(replaceText(description), closeSoftKeyboard())
+        Allure.step("Ввести описание: $description") {
+            descriptionField.perform(replaceText(description), closeSoftKeyboard())
+        }
         return this
     }
 
-    @Step("Ввести дату публикации: {date}")
     fun enterPublishDate(date: String): CreateNewsPage {
-        onView(withId(R.id.news_publish_date_edit_text))
-            .perform(replaceText(date), closeSoftKeyboard())
+        Allure.step("Ввести дату публикации: $date") {
+            publishDateField.perform(replaceText(date), closeSoftKeyboard())
+        }
         return this
     }
 
-    @Step("Ввести время публикации: {time}")
     fun enterPublishTime(time: String): CreateNewsPage {
-        onView(withId(R.id.news_publish_time_edit_text))
-            .perform(replaceText(time), closeSoftKeyboard())
+        Allure.step("Ввести время публикации: $time") {
+            publishTimeField.perform(replaceText(time), closeSoftKeyboard())
+        }
         return this
     }
 
-    @Step("Выбрать первую категорию из выпадающего списка")
     fun selectCategory(): CreateNewsPage {
-        onView(withId(R.id.news_category_auto_complete)).perform(click())
-        device.waitForIdle()
-        device.click(540, 771)
-        device.waitForIdle()
+        Allure.step("Выбрать первую категорию из выпадающего списка") {
+            categoryField.perform(click())
+            device.waitForIdle()
+            device.click(540, 771)
+            device.waitForIdle()
+        }
         return this
     }
 
-    @Step("Нажать кнопку SAVE")
     fun clickSave(): CreateNewsPage {
-        onView(withId(R.id.news_save_button)).perform(click())
+        Allure.step("Нажать кнопку SAVE") {
+            saveButton.perform(click())
+        }
         return this
     }
 
-    @Step("Нажать кнопку CANCEL")
     fun clickCancel(): CreateNewsPage {
-        onView(withId(R.id.news_cancel_button)).perform(click())
+        Allure.step("Нажать кнопку CANCEL") {
+            cancelButton.perform(click())
+        }
         return this
     }
 
-    @Step("Заполнить форму и сохранить")
     fun fillAndSave(
         title: String,
         description: String,
         date: String,
         time: String
     ): CreateNewsPage {
-        selectCategory()
-        enterTitle(title)
-        enterDescription(description)
-        enterPublishDate(date)
-        enterPublishTime(time)
-        clickSave()
+        Allure.step("Заполнить форму и сохранить") {
+            selectCategory()
+            enterTitle(title)
+            enterDescription(description)
+            enterPublishDate(date)
+            enterPublishTime(time)
+            clickSave()
+        }
         return this
     }
 }
